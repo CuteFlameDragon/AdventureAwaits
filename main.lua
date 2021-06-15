@@ -81,7 +81,7 @@ function spawnBullet()
   local bullet = {}
   bullet.x = player.x
   bullet.y = player.y
-  bullet.speed = 1000
+  bullet.speed = 1001
   bullet.direction = getPlayerAngle()
   table.insert(bullets, bullet)
 end
