@@ -8,7 +8,7 @@ function love.load(arg)
   player = {}
   player.x = love.graphics.getWidth() / 2
   player.y = love.graphics.getHeight() / 2
-  player.speed = 500
+  player.speed = 5000
 
   bullets = {}
 
@@ -81,7 +81,7 @@ function spawnBullet()
   local bullet = {}
   bullet.x = player.x
   bullet.y = player.y
-  bullet.speed = 1001
+  bullet.speed = 1000
   bullet.direction = getPlayerAngle()
   table.insert(bullets, bullet)
 end
