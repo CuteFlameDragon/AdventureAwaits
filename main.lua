@@ -32,6 +32,7 @@ function love.update(dt)
 
    updateBullets(dt)
 
+   delBullets(dt)
 end
 
 function love.draw()
@@ -81,7 +82,7 @@ function spawnBullet()
   local bullet = {}
   bullet.x = player.x
   bullet.y = player.y
-  bullet.speed = 1001
+  bullet.speed = 1000
   bullet.direction = getPlayerAngle()
   table.insert(bullets, bullet)
 end
@@ -131,3 +132,38 @@ function updateBullets(dt)
    --stop = true
  end
 end
+
+function delBullets(dt)
+  for i=#bullets, 1 , -1 do
+    local b = bullets[1]
+    if b.x < 0 or b.y < 0 or b.y > 1000 or b.x > 1000 then
+     table.remove(bullets, i)
+    end
+  end
+end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        --play
