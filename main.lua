@@ -33,6 +33,30 @@ function love.update(dt)
    updateBullets(dt)
 
    delBullets(dt)
+
+   for i,z in ipairs(zombies) do
+      for i,b in ipairs(bullets) do
+        if distanceBetween (z.x ,z.y, b.x, b.y) <15 then
+          z.dead = true
+          b.dead = true
+        end
+      end
+    end
+
+    for i=#zombies, 1, -1 do
+      local z = zombies[i]
+        if zombies.dead == true then
+           table.remove(zombies, i)
+        end
+    end
+
+    for i=#bullets, 1, -1 do
+      local b = bullets[i]
+        if bullets.dead == true then
+           table.remove(bullets, i)
+        end
+    end
+
 end
 
 function love.draw()
@@ -42,8 +66,30 @@ function love.draw()
   local i = 1
 
   while i <= #bullets do
+    if bullets[i].dead == true then
+      return
+    end
     love.graphics.draw(sprites.bullet, bullets[i].x, bullets[i].y, nil, 0.5, 0.5,sprites.bullet:getWidth()/2, sprites.bullet:getHeight()/2)
     i = i + 1
+  end
+  pickUp()
+
+  cleanUp()
+end
+
+function cleanUp()
+  for index, zombie in ipairs(zombies) do
+    if zombie.dead then
+      table.remove(zombies, index)
+    end
+  end
+end
+
+function pickUp()
+  for index, bullet in ipairs(bullets) do
+    if bullet.dead then
+      table.remove(bullets, index)
+    end
   end
 end
 
@@ -73,6 +119,7 @@ function spawnZombies(num)
    zombie.x = math.random(0, love.graphics.getWidth())
    zombie.y = math.random(0, love.graphics.getHeight())
    zombie.speed = 100
+   zombie.dead = false
    table.insert(zombies, zombie)
    num = num - 1
  end
@@ -83,6 +130,7 @@ function spawnBullet()
   bullet.x = player.x
   bullet.y = player.y
   bullet.speed = 1000
+  bullet.dead = false
   bullet.direction = getPlayerAngle()
   table.insert(bullets, bullet)
 end
@@ -91,7 +139,9 @@ function drawZombies()
   local count = 1
   local numberOfZombies = #zombies
   while count <= numberOfZombies do
-    love.graphics.draw(sprites.zombie, zombies[count].x, zombies[count].y,getZombieAngle(zombies[count]), nil, nil,17.5 , 21.5)
+     if zombies[count].dead == false then
+       love.graphics.draw(sprites.zombie, zombies[count].x, zombies[count].y,getZombieAngle(zombies[count]), nil, nil,17.5 , 21.5)
+     end
     count = count + 1
   end
 end
@@ -113,24 +163,23 @@ function updateZombies(dt)
   z.x = z.x + math.cos(angle) * z.speed * dt
   z.y = z.y + math.sin(angle) * z.speed * dt
   count = count + 1
-  if distanceBetween(z.x, z.y, player.x, player.y) <1 then
-    stop = true
+
+    if distanceBetween(z.x, z.y, player.x, player.y) <10 then
+     stop = true
+   end
   end
- end
 end
 
 function updateBullets(dt)
- local count = 1
- local numberOfBullets = #bullets
- while count <= numberOfBullets do
-  local b = bullets[count]
-  local angle = b.direction
-  b.x = b.x + math.cos(angle) * b.speed * dt
-  b.y = b.y + math.sin(angle) * b.speed * dt
-  count = count + 1
-  --if distanceBetween(z.x, z.y, b.x, b.y) <10 then
-   --stop = true
- end
+  local count = 1
+  local numberOfBullets = #bullets
+    while count <= numberOfBullets do
+      local b = bullets[count]
+      local angle = b.direction
+      b.x = b.x + math.cos(angle) * b.speed * dt
+      b.y = b.y + math.sin(angle) * b.speed * dt
+      count = count + 1
+   end
 end
 
 function delBullets(dt)
@@ -141,29 +190,3 @@ function delBullets(dt)
     end
   end
 end
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        --play
