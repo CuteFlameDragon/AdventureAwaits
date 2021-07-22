@@ -93,7 +93,7 @@ end
 
  function love.keypressed(key)
   if key == "space" then
-     spawnZombies(100000)
+     spawnZombies(10)
   end
 end
 
