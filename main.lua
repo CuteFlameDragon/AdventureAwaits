@@ -8,7 +8,7 @@ function love.load(arg)
   player = {}
   player.x = love.graphics.getWidth() / 2
   player.y = love.graphics.getHeight() / 2
-  player.speed = 500
+  player.speed = 250
 
   bullets = {}
 
@@ -66,9 +66,7 @@ function love.draw()
   local i = 1
 
   while i <= #bullets do
-    if bullets[i].dead == true then
-      return
-    end
+
     love.graphics.draw(sprites.bullet, bullets[i].x, bullets[i].y, nil, 0.5, 0.5,sprites.bullet:getWidth()/2, sprites.bullet:getHeight()/2)
     i = i + 1
   end
@@ -95,7 +93,7 @@ end
 
  function love.keypressed(key)
   if key == "space" then
-     spawnZombies(1)
+     spawnZombies(333)
   end
 end
 
@@ -116,9 +114,29 @@ end
 function spawnZombies(num)
   while num > 0 do
    local zombie = {}
-   zombie.x = math.random(0, love.graphics.getWidth())
-   zombie.y = math.random(0, love.graphics.getHeight())
-   zombie.speed = 100
+   local side = math.random(1, 4)
+
+   if side == 1 then
+     zombie.x = (0)
+     zombie.y = math.random(0, love.graphics.getHeight())
+   end
+
+   if side == 2 then
+     zombie.y = (0)
+     zombie.x = math.random(0, love.graphics.getWidth())
+   end
+
+   if side == 3 then
+     zombie.y = (love.graphics.getHeight())
+     zombie.x = math.random(0, love.graphics.getWidth())
+   end
+
+   if side == 4 then
+     zombie.x = (love.graphics.getWidth())
+     zombie.y = math.random(0, love.graphics.getHeight())
+   end
+
+   zombie.speed = 75
    zombie.dead = false
    table.insert(zombies, zombie)
    num = num - 1
