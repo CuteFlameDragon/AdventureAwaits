@@ -93,7 +93,7 @@ end
 
  function love.keypressed(key)
   if key == "space" then
-     spawnZombies(333)
+     spawnZombies(100000)
   end
 end
 
@@ -114,27 +114,7 @@ end
 function spawnZombies(num)
   while num > 0 do
    local zombie = {}
-   local side = math.random(1, 4)
-
-   if side == 1 then
-     zombie.x = (0)
-     zombie.y = math.random(0, love.graphics.getHeight())
-   end
-
-   if side == 2 then
-     zombie.y = (0)
-     zombie.x = math.random(0, love.graphics.getWidth())
-   end
-
-   if side == 3 then
-     zombie.y = (love.graphics.getHeight())
-     zombie.x = math.random(0, love.graphics.getWidth())
-   end
-
-   if side == 4 then
-     zombie.x = (love.graphics.getWidth())
-     zombie.y = math.random(0, love.graphics.getHeight())
-   end
+  zombie.x,zombie.y = ZspawnPosition()
 
    zombie.speed = 75
    zombie.dead = false
@@ -207,4 +187,29 @@ function delBullets(dt)
      table.remove(bullets, i)
     end
   end
+end
+
+function ZspawnPosition()
+  local side = math.random(1, 4)
+  local x, y
+  if side == 1 then
+    x = (0)
+    y = math.random(0, love.graphics.getHeight())
+  end
+
+  if side == 2 then
+    y = (0)
+    x = math.random(0, love.graphics.getWidth())
+  end
+
+  if side == 3 then
+    y = (love.graphics.getHeight())
+    x = math.random(0, love.graphics.getWidth())
+  end
+
+  if side == 4 then
+    x = (love.graphics.getWidth())
+    y = math.random(0, love.graphics.getHeight())
+  end
+  return x, y
 end
