@@ -14,6 +14,9 @@ function love.load(arg)
 
   zombies = {}
   stop = false
+
+  MaxTime = 5
+  timer = MaxTime
 end
 
 
@@ -57,6 +60,13 @@ function love.update(dt)
         end
     end
 
+  if timer <= 0 then
+    spawnZombies(1)
+    MaxTime = 0.95 * MaxTime
+    timer = MaxTime
+end
+  timer = timer - dt
+
 end
 
 function love.draw()
@@ -93,7 +103,7 @@ end
 
  function love.keypressed(key)
   if key == "space" then
-     spawnZombies(10)
+     spawnZombies(1)
   end
 end
 
