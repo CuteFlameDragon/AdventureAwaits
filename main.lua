@@ -1,4 +1,5 @@
 function love.load(arg)
+  stop = false
   sprites = {}
   sprites.player = love.graphics.newImage("sprites/player.png")
   sprites.background = love.graphics.newImage("sprites/background.png")
@@ -9,11 +10,11 @@ function love.load(arg)
   player.x = love.graphics.getWidth() / 2
   player.y = love.graphics.getHeight() / 2
   player.speed = 250
+  player.lives = 3
 
   bullets = {}
 
   zombies = {}
-  stop = false
 
   MaxTime = 5
   timer = MaxTime
@@ -73,6 +74,7 @@ function love.draw()
   love.graphics.draw(sprites.background, 0, 0)
   drawZombies()
   drawPlayer()
+  love.graphics.print(player.lives)
   local i = 1
 
   while i <= #bullets do
@@ -155,7 +157,11 @@ function drawZombies()
 end
 
 function drawPlayer()
+  if player.lives <= 1 then
+    love.graphics.setColor(255, 0, 0)
+  end
   love.graphics.draw(sprites.player, player.x, player.y,  getPlayerAngle(), nil, nil, 17.5, 21.5)
+  love.graphics.setColor(255, 255, 255)
 end
 
 function distanceBetween(x1, y1, x2, y2)
@@ -173,8 +179,23 @@ function updateZombies(dt)
   count = count + 1
 
     if distanceBetween(z.x, z.y, player.x, player.y) <10 then
-     stop = true
+      player.lives = player.lives -1
+      P_speed_increase()
+      z.dead = true
+      if player.lives == 0 then
+        stop = true
+      end
    end
+  end
+end
+
+function P_speed_increase()
+  if player.lives == 2 then
+    player.speed = 350
+  elseif player.lives == 1 then
+    player.speed = 500
+  elseif player.lives == 0 then
+    player.speed = 1
   end
 end
 
