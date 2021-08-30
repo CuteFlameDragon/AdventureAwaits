@@ -11,7 +11,7 @@ function love.load(arg)
   player.y = love.graphics.getHeight() / 2
   player.speed = 250
   player.lives = 3
-
+  stamina = 1
   bullets = {}
 
   zombies = {}
@@ -22,6 +22,9 @@ end
 
 
 function love.update(dt)
+
+stamina = stamina + 1
+
   if love.keyboard.isDown("d") then
     player.x = player.x + player.speed * dt
   elseif love.keyboard.isDown("w") then
@@ -30,6 +33,22 @@ function love.update(dt)
     player.y = player.y + player.speed * dt
   elseif love.keyboard.isDown("a") then
     player.x = player.x - player.speed * dt
+  end
+
+  if stamina>= 600 then
+    if love.keyboard.isDown("l") then
+      player.x = player.x + player.speed 
+      stamina = 0
+    elseif love.keyboard.isDown("i") then
+      player.y = player.y - player.speed
+      stamina = 0
+    elseif love.keyboard.isDown("k") then
+      player.y = player.y + player.speed
+      stamina = 0
+    elseif love.keyboard.isDown("j") then
+      player.x = player.x - player.speed
+      stamina = 0
+    end
   end
 
    updateZombies(dt)
@@ -76,6 +95,8 @@ function love.draw()
   drawPlayer()
   love.graphics.print(player.lives)
   local i = 1
+
+   love.graphics.print(stamina, 0, 10)
 
   while i <= #bullets do
 
